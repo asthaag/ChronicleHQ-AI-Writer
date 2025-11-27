@@ -4,7 +4,6 @@ import { Editor, type EditorRef } from './components/Editor';
 import { ContinueWritingButton } from './components/ContinueWritingButton';
 import { SuggestionPreview } from './components/SuggestionPreview';
 import { ToastContainer } from './components/Toast';
-import { KeyboardHint } from './components/KeyboardHint';
 import { editorMachine } from './machines/editorMachine';
 import { useToast } from './hooks/useToast';
 import './App.css';
@@ -227,7 +226,6 @@ function App() {
                 {content.length > 0 && (
                   <span className="char-count">{content.length} characters</span>
                 )}
-                <KeyboardHint visible={canGenerate} />
               </div>
               <ContinueWritingButton
                 onClick={handleContinueWriting}

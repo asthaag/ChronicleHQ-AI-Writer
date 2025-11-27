@@ -73,29 +73,7 @@ export const ContinueWritingButton = memo(function ContinueWritingButton({
           <span className="btn-text">Writing...</span>
         </>
       ) : (
-        <>
-          <span className="btn-icon">
-            {/* Sparkle/AI icon */}
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12 2L13.09 8.26L19 7L14.74 11.09L21 14L14.74 12.91L13.09 19L12 12.74L5 14L11.26 11.09L5 7L11.26 8.26L12 2Z"
-                fill="currentColor"
-              />
-            </svg>
-          </span>
-          <span className="btn-text">Continue Writing</span>
-          <span className="btn-shortcut">
-            <kbd>Ctrl</kbd>
-            <span className="shortcut-plus">+</span>
-            <kbd>Enter</kbd>
-          </span>
-        </>
+        <span className="btn-text">Continue Writing</span>
       )}
     </button>
   );
