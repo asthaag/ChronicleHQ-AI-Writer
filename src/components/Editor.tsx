@@ -32,6 +32,10 @@ interface EditorProps {
   placeholder?: string;
   /** Whether the editor is disabled (during AI generation/review) */
   disabled?: boolean;
+  /** AI-generated text to show inline (streaming or complete) */
+  streamingText?: string;
+  /** Whether AI is currently generating (shows blinking cursor) */
+  isStreaming?: boolean;
 }
 
 /**
@@ -67,6 +71,8 @@ export const Editor = memo(
         onChange,
         placeholder = 'Start writing...',
         disabled,
+        streamingText,
+        isStreaming,
       },
       ref
     ) => {
@@ -127,6 +133,7 @@ export const Editor = memo(
         'editor-wrapper',
         disabled && 'editor-disabled',
         isEmpty && 'editor-empty',
+        isStreaming && 'editor-streaming',
       ]
         .filter(Boolean)
         .join(' ');
@@ -152,6 +159,14 @@ export const Editor = memo(
             className="editor-container"
             data-placeholder={placeholder}
           />
+
+          {/* Inline AI streaming text preview */}
+          {streamingText && (
+            <div className="ai-text-preview">
+              <span className="ai-text-content">{streamingText}</span>
+              {isStreaming && <span className="ai-text-cursor" />}
+            </div>
+          )}
         </div>
       );
     }

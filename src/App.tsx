@@ -2,7 +2,6 @@ import { useRef, useCallback, useEffect } from 'react';
 import { useMachine } from '@xstate/react';
 import { Editor, type EditorRef } from './components/Editor';
 import { ContinueWritingButton } from './components/ContinueWritingButton';
-import { SuggestionPreview } from './components/SuggestionPreview';
 import { ToastContainer } from './components/Toast';
 import { editorMachine } from './machines/editorMachine';
 import { useToast } from './hooks/useToast';
@@ -14,12 +13,12 @@ import './App.css';
  * This component orchestrates the AI-assisted editor using XState for state management.
  * The component's role is purely presentational - all business logic lives in the machine.
  *
- * NEW FLOW (Controlled AI Suggestions):
+ * FLOW (Inline AI Suggestions):
  * 1. User clicks "Continue Writing" → AI generates text
- * 2. AI text streams into a preview area (NOT into the editor)
+ * 2. AI text streams directly into the editor (shown inline with distinct styling)
  * 3. When complete, user sees "Use this text" / "Generate again" / "Discard" buttons
  * 4. User explicitly accepts or rejects the suggestion
- * 5. Only on accept does the text get inserted into the editor
+ * 5. On accept, the text becomes part of the document
  *
  * This gives users full control over what AI-generated content enters their document.
  */
@@ -198,26 +197,115 @@ function App() {
             </p>
           </div>
 
-          {/* Editor - No streaming overlay, that's now in SuggestionPreview */}
+          {/* Editor with inline AI text streaming */}
           <Editor
             ref={editorRef}
             initialContent=""
             onChange={handleContentChange}
             placeholder="Start typing your story, idea, or anything you'd like the AI to continue..."
             disabled={isGenerating || isReviewing}
+            streamingText={suggestedContent}
+            isStreaming={isGenerating}
           />
 
-          {/* AI Suggestion Preview Panel */}
-          <SuggestionPreview
-            suggestion={suggestedContent}
-            isGenerating={isGenerating}
-            isReviewing={isReviewing}
-            isPartial={isPartialSuggestion}
-            onCancel={handleCancel}
-            onAccept={handleAccept}
-            onReject={handleReject}
-            onRegenerate={handleRegenerate}
-          />
+          {/* Inline action buttons - shown during generation or review */}
+          {(isGenerating || isReviewing) && (
+            <div className="inline-actions">
+              {isGenerating && (
+                <button
+                  type="button"
+                  className="inline-btn inline-btn-cancel"
+                  onClick={handleCancel}
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                  Cancel
+                </button>
+              )}
+
+              {isReviewing && (
+                <>
+                  <button
+                    type="button"
+                    className="inline-btn inline-btn-accept"
+                    onClick={handleAccept}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    Use this text
+                  </button>
+
+                  {!isPartialSuggestion && (
+                    <button
+                      type="button"
+                      className="inline-btn inline-btn-regenerate"
+                      onClick={handleRegenerate}
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M21 2v6h-6" />
+                        <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
+                        <path d="M3 22v-6h6" />
+                        <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+                      </svg>
+                      Generate again
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    className="inline-btn inline-btn-discard"
+                    onClick={handleReject}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M3 6h18" />
+                      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    </svg>
+                    Discard
+                  </button>
+                </>
+              )}
+            </div>
+          )}
 
           {/* Action Bar - Only show when idle */}
           {isIdle && (

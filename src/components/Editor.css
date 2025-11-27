@@ -300,6 +300,53 @@
 }
 
 /* ============================================================================
+   AI TEXT PREVIEW (Inline streaming)
+   ============================================================================ */
+
+.ai-text-preview {
+  padding: 0 32px 24px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 1.4;
+  color: #6366f1;
+  white-space: pre-wrap;
+  animation: aiTextFadeIn 0.2s ease-out;
+}
+
+@keyframes aiTextFadeIn {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ai-text-content {
+  opacity: 0.85;
+}
+
+.ai-text-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 100%);
+  margin-left: 2px;
+  animation: aiCursorBlink 0.8s ease-in-out infinite;
+  vertical-align: text-bottom;
+  border-radius: 1px;
+}
+
+@keyframes aiCursorBlink {
+  0%, 45% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+/* ============================================================================
    DARK MODE
    ============================================================================ */
 
@@ -373,6 +420,14 @@
     border-left-color: #4b5563;
     color: #9ca3af;
   }
+
+  .ai-text-preview {
+    color: #a5b4fc;
+  }
+
+  .ai-text-cursor {
+    background: linear-gradient(180deg, #818cf8 0%, #a78bfa 100%);
+  }
 }
 
 /* ============================================================================
@@ -393,5 +448,25 @@
     min-height: 280px;
     padding: 20px 24px;
     font-size: 16px;
+  }
+
+  .ai-text-preview {
+    padding: 0 24px 20px;
+    font-size: 16px;
+  }
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-text-preview {
+    animation: none;
+  }
+
+  .ai-text-cursor {
+    animation: none;
+    opacity: 1;
   }
 }
