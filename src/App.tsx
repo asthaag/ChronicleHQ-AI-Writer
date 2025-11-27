@@ -182,33 +182,8 @@ function App() {
       <header className="app-header">
         <div className="header-content">
           <div className="logo">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect width="32" height="32" rx="8" fill="#111827" />
-              <path
-                d="M10 16L14 12L18 16L22 12"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M10 20L14 16L18 20L22 16"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span className="logo-text">AI Writer</span>
-          </div>
-          <div className="header-actions">
-            <span className="powered-by">Powered by Gemini</span>
+            <img src="/logo.png" alt="ChronicleHQ Logo" width="32" height="32" />
+            <span className="logo-text">ChronicleHQ</span>
           </div>
         </div>
       </header>
@@ -266,7 +241,6 @@ function App() {
 
       {/* Footer */}
       <footer className="app-footer">
-        <p>Built with React, TypeScript, XState, and ProseMirror</p>
       </footer>
 
       {/* Toast Notifications */}

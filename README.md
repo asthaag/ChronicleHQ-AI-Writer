@@ -1,4 +1,4 @@
-# AI Editor
+# ChronicleHQ
 
 An AI-powered text editor that helps you write by continuing your text using Google Gemini AI.
 

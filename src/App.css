@@ -185,11 +185,11 @@ body {
 }
 
 .editor-header p {
-  font-size: 15px;
+  font-size: 18px;
   color: #9ca3af;
-  max-width: 520px;
+  max-width: 580px;
   margin: 0 auto;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 .editor-header kbd {
@@ -450,8 +450,8 @@ body {
   }
 
   .editor-header p {
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 16px;
+    line-height: 1.65;
   }
 
   .action-bar {
