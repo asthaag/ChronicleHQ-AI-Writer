@@ -57,7 +57,6 @@ export const Toolbar = memo(function Toolbar({
               <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z" />
             </svg>
           </button>
-          <span className="toolbar-tooltip">Bold<kbd>Ctrl+B</kbd></span>
         </div>
 
         {/* Italic Button */}
@@ -76,7 +75,6 @@ export const Toolbar = memo(function Toolbar({
               <line x1="15" y1="4" x2="9" y2="20" />
             </svg>
           </button>
-          <span className="toolbar-tooltip">Italic<kbd>Ctrl+I</kbd></span>
         </div>
       </div>
 
@@ -97,7 +95,6 @@ export const Toolbar = memo(function Toolbar({
               <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
             </svg>
           </button>
-          <span className="toolbar-tooltip">Undo<kbd>Ctrl+Z</kbd></span>
         </div>
 
         {/* Redo Button */}
@@ -114,7 +111,6 @@ export const Toolbar = memo(function Toolbar({
               <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7" />
             </svg>
           </button>
-          <span className="toolbar-tooltip">Redo<kbd>Ctrl+Shift+Z</kbd></span>
         </div>
       </div>
     </div>
