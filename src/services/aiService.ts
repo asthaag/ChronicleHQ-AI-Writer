@@ -1,13 +1,3 @@
-/**
- * AI Service for text continuation using Google Gemini API
- *
- * This service handles the AI text generation with proper cancellation support.
- * Key behaviors:
- * - Cancellation is immediate and clean (no callbacks fired after cancel)
- * - Only one request can be active at a time
- * - Simulates streaming for better UX
- */
-
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
@@ -17,12 +7,7 @@ export interface StreamCallbacks {
   onError: (error: string) => void;
 }
 
-/**
- * Call Google Gemini API with streaming simulation.
- *
- * IMPORTANT: When cancelled, this function returns silently WITHOUT calling
- * any callbacks. This prevents race conditions with the state machine.
- */
+
 const callGeminiAPI = async (
   prompt: string,
   callbacks: StreamCallbacks,

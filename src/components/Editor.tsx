@@ -3,66 +3,23 @@ import { useProsemirror } from '../hooks/useProsemirror';
 import { Toolbar } from './Toolbar';
 import './Editor.css';
 
-/**
- * Editor component ref interface.
- * Exposes imperative methods for controlling the ProseMirror editor.
- */
 export interface EditorRef {
-  /** Get the current text content from the editor */
   getContent: () => string;
-  /** Replace all content in the editor */
   setContent: (content: string) => void;
-  /** Append text to the end of the editor content */
   appendContent: (content: string) => void;
-  /** Focus the editor */
   focus: () => void;
-  /** Scroll the editor to the bottom */
   scrollToBottom: () => void;
 }
 
-/**
- * Props for the Editor component.
- */
 interface EditorProps {
-  /** Initial content to populate the editor */
   initialContent?: string;
-  /** Callback fired when content changes */
   onChange?: (content: string) => void;
-  /** Placeholder text shown when editor is empty */
   placeholder?: string;
-  /** Whether the editor is disabled (during AI generation/review) */
   disabled?: boolean;
-  /** AI-generated text to show inline (streaming or complete) */
   streamingText?: string;
-  /** Whether AI is currently generating (shows blinking cursor) */
   isStreaming?: boolean;
 }
 
-/**
- * AI-Assisted Text Editor Component
- *
- * Built on ProseMirror, this editor provides a rich text editing experience.
- * AI suggestions are now shown in a separate SuggestionPreview panel,
- * giving users explicit control over what gets inserted.
- *
- * Features:
- * - Rich text editing with ProseMirror
- * - Formatting toolbar (Bold, Italic, Undo, Redo)
- * - Keyboard shortcuts support
- * - Accessible placeholder when empty
- *
- * @example
- * ```tsx
- * const editorRef = useRef<EditorRef>(null);
- *
- * <Editor
- *   ref={editorRef}
- *   onChange={(text) => console.log(text)}
- *   placeholder="Start writing..."
- *   disabled={isGenerating}
- * />
- * ```
- */
 export const Editor = memo(
   forwardRef<EditorRef, EditorProps>(
     (
@@ -98,7 +55,6 @@ export const Editor = memo(
         placeholder,
       });
 
-      // Expose imperative methods via ref
       useImperativeHandle(
         ref,
         () => ({
@@ -111,7 +67,6 @@ export const Editor = memo(
         [getContent, setContent, appendContent, focus, scrollToBottom]
       );
 
-      // Toggle contenteditable based on disabled state
       useEffect(() => {
         const editorElement = editorRef.current;
         if (!editorElement) return;
@@ -128,7 +83,6 @@ export const Editor = memo(
         }
       }, [disabled, editorRef]);
 
-      // Compute class names
       const wrapperClasses = [
         'editor-wrapper',
         disabled && 'editor-disabled',
@@ -140,7 +94,6 @@ export const Editor = memo(
 
       return (
         <div className={wrapperClasses}>
-          {/* Minimalist formatting toolbar */}
           <Toolbar
             onBold={toggleBold}
             onBulletList={toggleBulletList}
@@ -153,14 +106,12 @@ export const Editor = memo(
             disabled={disabled}
           />
 
-          {/* Main ProseMirror editor container */}
           <div
             ref={editorRef}
             className="editor-container"
             data-placeholder={placeholder}
           />
 
-          {/* Inline AI streaming text preview */}
           {streamingText && (
             <div className="ai-text-preview">
               <span className="ai-text-content">{streamingText}</span>
