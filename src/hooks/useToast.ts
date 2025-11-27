@@ -65,13 +65,6 @@ export function useToast() {
   }, []);
 
   /**
-   * Dismiss all toasts
-   */
-  const dismissAll = useCallback(() => {
-    setToasts([]);
-  }, []);
-
-  /**
    * Shorthand methods for common toast types
    */
   const success = useCallback(
@@ -84,11 +77,6 @@ export function useToast() {
     [toast]
   );
 
-  const info = useCallback(
-    (message: string, duration?: number) => toast(message, { type: 'info', duration }),
-    [toast]
-  );
-
   const neutral = useCallback(
     (message: string, duration?: number) => toast(message, { type: 'neutral', duration }),
     [toast]
@@ -98,10 +86,8 @@ export function useToast() {
     toasts,
     toast,
     dismissToast,
-    dismissAll,
     success,
     error,
-    info,
     neutral,
   };
 }

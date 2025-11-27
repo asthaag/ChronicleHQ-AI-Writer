@@ -37,11 +37,9 @@ interface UseProsemirrorOptions {
 
 interface UseProsemirrorReturn {
   editorRef: React.RefObject<HTMLDivElement | null>;
-  view: EditorView | null;
   getContent: () => string;
   setContent: (content: string) => void;
   appendContent: (content: string) => void;
-  insertAtCursor: (content: string) => void;
   focus: () => void;
   isEmpty: boolean;
   // Formatting commands
@@ -183,21 +181,6 @@ export function useProsemirror({
     viewRef.current.dispatch(selectionTr);
   }, []);
 
-  // Insert content at cursor position
-  const insertAtCursor = useCallback((content: string): void => {
-    if (!viewRef.current) return;
-
-    const { state } = viewRef.current;
-    const { from } = state.selection;
-
-    // Create text node
-    const textNode = schema.text(content);
-
-    // Insert at cursor
-    const tr = state.tr.insert(from, textNode);
-    viewRef.current.dispatch(tr);
-  }, []);
-
   // Focus the editor
   const focus = useCallback((): void => {
     viewRef.current?.focus();
@@ -332,11 +315,9 @@ export function useProsemirror({
 
   return {
     editorRef,
-    view: viewRef.current,
     getContent,
     setContent,
     appendContent,
-    insertAtCursor,
     focus,
     isEmpty,
     toggleBold,
