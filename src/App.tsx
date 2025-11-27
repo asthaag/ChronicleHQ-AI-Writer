@@ -181,7 +181,7 @@ function App() {
         <div className="header-content">
           <div className="logo">
             <img src="/logo.png" alt="ChronicleHQ Logo" width="50" height="50" />
-            <span className="logo-text">ChronicleHQ</span>
+            <span className="logo-text">Chronicle</span>
           </div>
         </div>
       </header>
