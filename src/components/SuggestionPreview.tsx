@@ -126,18 +126,6 @@ export const SuggestionPreview = memo(function SuggestionPreview({
             <span>Writing...</span>
           </div>
         )}
-        {isReviewing && !isPartial && (
-          <div className="suggestion-status ready">
-            <span className="status-check">✓</span>
-            <span>Ready for review</span>
-          </div>
-        )}
-        {isReviewing && isPartial && (
-          <div className="suggestion-status partial">
-            <span className="status-partial">◐</span>
-            <span>Partial suggestion</span>
-          </div>
-        )}
       </div>
 
       {/* Suggestion text content */}
