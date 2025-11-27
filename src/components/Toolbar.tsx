@@ -6,11 +6,11 @@ import './Toolbar.css';
  */
 interface ToolbarProps {
   onBold: () => void;
-  onItalic: () => void;
+  onBulletList: () => void;
   onUndo: () => void;
   onRedo: () => void;
   isBoldActive: boolean;
-  isItalicActive: boolean;
+  isBulletListActive: boolean;
   canUndo: boolean;
   canRedo: boolean;
   disabled?: boolean;
@@ -30,11 +30,11 @@ interface ToolbarProps {
  */
 export const Toolbar = memo(function Toolbar({
   onBold,
-  onItalic,
+  onBulletList,
   onUndo,
   onRedo,
   isBoldActive,
-  isItalicActive,
+  isBulletListActive,
   canUndo,
   canRedo,
   disabled = false,
@@ -59,20 +59,23 @@ export const Toolbar = memo(function Toolbar({
           </button>
         </div>
 
-        {/* Italic Button */}
+        {/* Bullet List Button */}
         <div className="toolbar-btn-wrapper">
           <button
             type="button"
-            className={`toolbar-btn ${isItalicActive ? 'active' : ''}`}
-            onClick={onItalic}
+            className={`toolbar-btn ${isBulletListActive ? 'active' : ''}`}
+            onClick={onBulletList}
             disabled={disabled}
-            aria-label="Toggle italic"
-            aria-pressed={isItalicActive}
+            aria-label="Toggle bullet list"
+            aria-pressed={isBulletListActive}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="19" y1="4" x2="10" y2="4" />
-              <line x1="14" y1="20" x2="5" y2="20" />
-              <line x1="15" y1="4" x2="9" y2="20" />
+              <line x1="8" y1="6" x2="21" y2="6" />
+              <line x1="8" y1="12" x2="21" y2="12" />
+              <line x1="8" y1="18" x2="21" y2="18" />
+              <circle cx="4" cy="6" r="1" fill="currentColor" />
+              <circle cx="4" cy="12" r="1" fill="currentColor" />
+              <circle cx="4" cy="18" r="1" fill="currentColor" />
             </svg>
           </button>
         </div>

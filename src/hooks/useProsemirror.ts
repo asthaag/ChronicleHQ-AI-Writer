@@ -6,7 +6,8 @@ import { schema as basicSchema } from 'prosemirror-schema-basic';
 import { addListNodes } from 'prosemirror-schema-list';
 import { history, undo, redo } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
-import { baseKeymap, toggleMark } from 'prosemirror-commands';
+import { baseKeymap, toggleMark, wrapIn, lift } from 'prosemirror-commands';
+import { wrapInList, liftListItem, sinkListItem, splitListItem } from 'prosemirror-schema-list';
 import { dropCursor } from 'prosemirror-dropcursor';
 import { gapCursor } from 'prosemirror-gapcursor';
 
@@ -45,12 +46,12 @@ interface UseProsemirrorReturn {
   isEmpty: boolean;
   // Formatting commands
   toggleBold: () => void;
-  toggleItalic: () => void;
+  toggleBulletList: () => void;
   undoAction: () => void;
   redoAction: () => void;
   // State checks
   isBoldActive: boolean;
-  isItalicActive: boolean;
+  isBulletListActive: boolean;
   canUndo: boolean;
   canRedo: boolean;
   // Utility
@@ -75,7 +76,7 @@ export function useProsemirror({
   const viewRef = useRef<EditorView | null>(null);
   const [isEmpty, setIsEmpty] = useState(true);
   const [isBoldActive, setIsBoldActive] = useState(false);
-  const [isItalicActive, setIsItalicActive] = useState(false);
+  const [isBulletListActive, setIsBulletListActive] = useState(false);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
   const onChangeRef = useRef(onChange);
@@ -99,6 +100,21 @@ export function useProsemirror({
   }, []);
 
   /**
+   * Check if selection is inside a bullet list
+   */
+  const isInBulletList = useCallback((): boolean => {
+    if (!viewRef.current) return false;
+    const { state } = viewRef.current;
+    const { $from } = state.selection;
+    for (let d = $from.depth; d > 0; d--) {
+      if ($from.node(d).type === schema.nodes.bullet_list) {
+        return true;
+      }
+    }
+    return false;
+  }, []);
+
+  /**
    * Update formatting state based on current selection
    */
   const updateFormattingState = useCallback(() => {
@@ -106,10 +122,10 @@ export function useProsemirror({
 
     const { state } = viewRef.current;
     setIsBoldActive(isMarkActive(schema.marks.strong));
-    setIsItalicActive(isMarkActive(schema.marks.em));
+    setIsBulletListActive(isInBulletList());
     setCanUndo(undo(state));
     setCanRedo(redo(state));
-  }, [isMarkActive]);
+  }, [isMarkActive, isInBulletList]);
 
   // Get text content from the editor
   const getContent = useCallback((): string => {
@@ -205,21 +221,25 @@ export function useProsemirror({
   }, [updateFormattingState]);
 
   /**
-   * Toggle italic formatting on the current selection.
+   * Toggle bullet list on the current selection.
    *
-   * HOW ITALIC TOGGLING WORKS:
-   * Uses ProseMirror's toggleMark command with schema.marks.em (emphasis).
-   * - If selection has no italic: applies the 'em' mark
-   * - If selection is already italic: removes the 'em' mark
-   *
-   * Also triggered by Mod-i keyboard shortcut (see keymap plugin below).
+   * If already in a bullet list, lifts out of it.
+   * If not in a bullet list, wraps in one.
    */
-  const toggleItalic = useCallback((): void => {
+  const toggleBulletList = useCallback((): void => {
     if (!viewRef.current) return;
-    toggleMark(schema.marks.em)(viewRef.current.state, viewRef.current.dispatch);
+    const { state, dispatch } = viewRef.current;
+
+    if (isInBulletList()) {
+      // Lift out of list
+      liftListItem(schema.nodes.list_item)(state, dispatch);
+    } else {
+      // Wrap in bullet list
+      wrapInList(schema.nodes.bullet_list)(state, dispatch);
+    }
     viewRef.current.focus();
     updateFormattingState();
-  }, [updateFormattingState]);
+  }, [updateFormattingState, isInBulletList]);
 
   // Undo action
   const undoAction = useCallback((): void => {
@@ -256,10 +276,15 @@ export function useProsemirror({
       plugins: [
         history(),
         keymap({ 'Mod-z': undo, 'Mod-y': redo, 'Mod-Shift-z': redo }),
-        // Formatting keyboard shortcuts: Mod-b for bold, Mod-i for italic
+        // Formatting keyboard shortcuts: Mod-b for bold
         keymap({
           'Mod-b': toggleMark(schema.marks.strong), // Bold
-          'Mod-i': toggleMark(schema.marks.em),     // Italic (em mark)
+        }),
+        // List keyboard shortcuts: Enter splits list item, Tab indents, Shift-Tab outdents
+        keymap({
+          'Enter': splitListItem(schema.nodes.list_item),
+          'Tab': sinkListItem(schema.nodes.list_item),
+          'Shift-Tab': liftListItem(schema.nodes.list_item),
         }),
         keymap(baseKeymap),
         dropCursor(),
@@ -284,7 +309,7 @@ export function useProsemirror({
         // Update formatting state on any transaction
         setTimeout(() => {
           setIsBoldActive(isMarkActive(schema.marks.strong));
-          setIsItalicActive(isMarkActive(schema.marks.em));
+          setIsBulletListActive(isInBulletList());
           setCanUndo(undo(newState));
           setCanRedo(redo(newState));
         }, 0);
@@ -315,11 +340,11 @@ export function useProsemirror({
     focus,
     isEmpty,
     toggleBold,
-    toggleItalic,
+    toggleBulletList,
     undoAction,
     redoAction,
     isBoldActive,
-    isItalicActive,
+    isBulletListActive,
     canUndo,
     canRedo,
     scrollToBottom,

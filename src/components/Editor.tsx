@@ -78,11 +78,11 @@ export const Editor = memo(
         focus,
         isEmpty,
         toggleBold,
-        toggleItalic,
+        toggleBulletList,
         undoAction,
         redoAction,
         isBoldActive,
-        isItalicActive,
+        isBulletListActive,
         canUndo,
         canRedo,
         scrollToBottom,
@@ -136,11 +136,11 @@ export const Editor = memo(
           {/* Minimalist formatting toolbar */}
           <Toolbar
             onBold={toggleBold}
-            onItalic={toggleItalic}
+            onBulletList={toggleBulletList}
             onUndo={undoAction}
             onRedo={redoAction}
             isBoldActive={isBoldActive}
-            isItalicActive={isItalicActive}
+            isBulletListActive={isBulletListActive}
             canUndo={canUndo}
             canRedo={canRedo}
             disabled={disabled}
