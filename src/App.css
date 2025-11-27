@@ -55,10 +55,10 @@ body {
    ============================================================================ */
 
 .app-header {
-  background: linear-gradient(180deg, #000000 0%, #000000 50%, #0a0a12 80%, #12121f 100%);
+  background: linear-gradient(180deg, #000000 0%, #000000 60%, #111111 100%);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+  border-bottom: 1px solid #222222;
   padding: 8px 0;
   position: sticky;
   top: 0;
@@ -119,7 +119,7 @@ body {
   flex: 1;
   display: flex;
   justify-content: center;
-  padding: 24px 32px 80px;
+  padding: 56px 32px 80px;
   position: relative;
 }
 
@@ -501,8 +501,8 @@ body {
   }
 
   .app-header {
-    background: linear-gradient(180deg, #000000 0%, #000000 50%, #0a0a12 80%, #12121f 100%);
-    border-bottom-color: rgba(99, 102, 241, 0.2);
+    background: linear-gradient(180deg, #000000 0%, #000000 60%, #111111 100%);
+    border-bottom-color: #222222;
   }
 
   .logo-text {
