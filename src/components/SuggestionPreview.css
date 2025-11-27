@@ -1,0 +1,587 @@
+/**
+ * SuggestionPreview Component Styles
+ *
+ * An elegant, Chronicle-style AI suggestion panel with:
+ * - Smooth slide-up + fade-in entrance animation
+ * - Soft purple → indigo gradient background
+ * - Premium button designs with hover/scale effects
+ * - Streaming text fade-in animation
+ */
+
+/* ============================================================================
+   CONTAINER
+   ============================================================================ */
+
+.suggestion-preview {
+  margin-top: 24px;
+  background: linear-gradient(
+    145deg,
+    rgba(99, 102, 241, 0.04) 0%,
+    rgba(139, 92, 246, 0.06) 50%,
+    rgba(168, 85, 247, 0.04) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  border-radius: 16px;
+  overflow: hidden;
+  animation: suggestionSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow:
+    0 4px 20px rgba(99, 102, 241, 0.08),
+    0 8px 32px rgba(139, 92, 246, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@keyframes suggestionSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================================
+   HEADER
+   ============================================================================ */
+
+.suggestion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.06) 0%,
+    rgba(139, 92, 246, 0.08) 50%,
+    rgba(168, 85, 247, 0.05) 100%
+  );
+  border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.suggestion-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6366f1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.suggestion-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+  border-radius: 6px;
+  animation: iconGlow 2s ease-in-out infinite;
+}
+
+@keyframes iconGlow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(139, 92, 246, 0.3);
+  }
+}
+
+.suggestion-icon svg {
+  color: #6366f1;
+  width: 14px;
+  height: 14px;
+}
+
+/* Status indicators */
+.suggestion-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.suggestion-status.generating {
+  color: #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.suggestion-status.ready {
+  color: #059669;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.suggestion-status.partial {
+  color: #d97706;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.status-check {
+  font-size: 13px;
+}
+
+.status-partial {
+  font-size: 13px;
+}
+
+/* Animated dots for generating status */
+.status-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status-dots span {
+  width: 6px;
+  height: 6px;
+  background: #6366f1;
+  border-radius: 50%;
+  animation: dotPulse 1.4s ease-in-out infinite;
+}
+
+.status-dots span:nth-child(1) { animation-delay: 0s; }
+.status-dots span:nth-child(2) { animation-delay: 0.2s; }
+.status-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 60%, 100% {
+    transform: scale(0.8);
+    opacity: 0.4;
+  }
+  30% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   CONTENT
+   ============================================================================ */
+
+.suggestion-content {
+  padding: 24px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.suggestion-text {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+  color: #374151;
+  margin: 0;
+  white-space: pre-wrap;
+  animation: textFadeIn 0.3s ease-out;
+}
+
+@keyframes textFadeIn {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.suggestion-placeholder {
+  color: #9ca3af;
+  font-style: italic;
+  animation: placeholderPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes placeholderPulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Blinking cursor for streaming */
+.suggestion-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 100%);
+  margin-left: 3px;
+  animation: cursorBlink 0.8s ease-in-out infinite;
+  vertical-align: text-bottom;
+  border-radius: 1px;
+}
+
+@keyframes cursorBlink {
+  0%, 45% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+/* ============================================================================
+   ACTIONS
+   ============================================================================ */
+
+.suggestion-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.6) 100%
+  );
+  border-top: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.suggestion-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.suggestion-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.suggestion-btn:hover::before {
+  opacity: 1;
+}
+
+.suggestion-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+.suggestion-btn svg {
+  transition: transform 0.2s ease;
+}
+
+/* Accept button - Primary action */
+.suggestion-btn-accept {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  color: #ffffff;
+  box-shadow:
+    0 2px 8px rgba(99, 102, 241, 0.3),
+    0 4px 16px rgba(139, 92, 246, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.suggestion-btn-accept:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 4px 12px rgba(99, 102, 241, 0.4),
+    0 8px 24px rgba(139, 92, 246, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.suggestion-btn-accept:hover svg {
+  transform: scale(1.1);
+}
+
+.suggestion-btn-accept:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.1s;
+}
+
+/* Regenerate button - Secondary action */
+.suggestion-btn-regenerate {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.12) 100%);
+  color: #6366f1;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.1);
+}
+
+.suggestion-btn-regenerate:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.18) 100%);
+  border-color: rgba(99, 102, 241, 0.35);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+}
+
+.suggestion-btn-regenerate:hover svg {
+  transform: rotate(45deg) scale(1.1);
+}
+
+.suggestion-btn-regenerate:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Reject/Discard button - Tertiary action */
+.suggestion-btn-reject {
+  background: rgba(255, 255, 255, 0.6);
+  color: #64748b;
+  border: 1px solid rgba(100, 116, 139, 0.2);
+}
+
+.suggestion-btn-reject:hover {
+  background: rgba(248, 250, 252, 0.9);
+  border-color: rgba(100, 116, 139, 0.3);
+  color: #475569;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.suggestion-btn-reject:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Cancel button */
+.suggestion-btn-cancel {
+  background: rgba(255, 255, 255, 0.6);
+  color: #64748b;
+  border: 1px solid rgba(100, 116, 139, 0.2);
+}
+
+.suggestion-btn-cancel:hover {
+  background: rgba(254, 242, 242, 0.9);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #dc2626;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+}
+
+.suggestion-btn-cancel:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .suggestion-preview {
+    background: linear-gradient(
+      145deg,
+      rgba(99, 102, 241, 0.08) 0%,
+      rgba(139, 92, 246, 0.1) 50%,
+      rgba(168, 85, 247, 0.06) 100%
+    );
+    border-color: rgba(99, 102, 241, 0.25);
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.3),
+      0 8px 32px rgba(99, 102, 241, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .suggestion-header {
+    background: linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.1) 0%,
+      rgba(139, 92, 246, 0.12) 50%,
+      rgba(168, 85, 247, 0.08) 100%
+    );
+    border-bottom-color: rgba(99, 102, 241, 0.15);
+  }
+
+  .suggestion-label {
+    color: #a5b4fc;
+  }
+
+  .suggestion-icon {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
+  }
+
+  .suggestion-icon svg {
+    color: #a5b4fc;
+  }
+
+  .suggestion-status {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .suggestion-status.generating {
+    color: #a5b4fc;
+    background: rgba(99, 102, 241, 0.15);
+  }
+
+  .suggestion-status.ready {
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.15);
+  }
+
+  .suggestion-status.partial {
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.15);
+  }
+
+  .status-dots span {
+    background: #a5b4fc;
+  }
+
+  .suggestion-text {
+    color: #e2e8f0;
+  }
+
+  .suggestion-placeholder {
+    color: #64748b;
+  }
+
+  .suggestion-cursor {
+    background: linear-gradient(180deg, #818cf8 0%, #a78bfa 100%);
+  }
+
+  .suggestion-actions {
+    background: linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.4) 0%,
+      rgba(15, 23, 42, 0.6) 100%
+    );
+    border-top-color: rgba(99, 102, 241, 0.15);
+  }
+
+  .suggestion-btn-accept {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    box-shadow:
+      0 2px 8px rgba(99, 102, 241, 0.4),
+      0 4px 16px rgba(139, 92, 246, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .suggestion-btn-accept:hover {
+    box-shadow:
+      0 4px 12px rgba(99, 102, 241, 0.5),
+      0 8px 24px rgba(139, 92, 246, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .suggestion-btn-regenerate {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.2) 100%);
+    color: #a5b4fc;
+    border-color: rgba(99, 102, 241, 0.3);
+  }
+
+  .suggestion-btn-regenerate:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.25) 100%);
+    border-color: rgba(99, 102, 241, 0.45);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+  }
+
+  .suggestion-btn-reject {
+    background: rgba(30, 41, 59, 0.6);
+    color: #94a3b8;
+    border-color: rgba(148, 163, 184, 0.2);
+  }
+
+  .suggestion-btn-reject:hover {
+    background: rgba(51, 65, 85, 0.8);
+    border-color: rgba(148, 163, 184, 0.3);
+    color: #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .suggestion-btn-cancel {
+    background: rgba(30, 41, 59, 0.6);
+    color: #94a3b8;
+    border-color: rgba(148, 163, 184, 0.2);
+  }
+
+  .suggestion-btn-cancel:hover {
+    background: rgba(127, 29, 29, 0.2);
+    border-color: rgba(239, 68, 68, 0.35);
+    color: #f87171;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 640px) {
+  .suggestion-preview {
+    margin-top: 20px;
+    border-radius: 12px;
+  }
+
+  .suggestion-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+
+  .suggestion-content {
+    padding: 20px 16px;
+  }
+
+  .suggestion-actions {
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  .suggestion-btn {
+    flex: 1;
+    min-width: 100px;
+    justify-content: center;
+    padding: 10px 14px;
+  }
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .suggestion-preview {
+    animation: none;
+  }
+
+  .suggestion-btn {
+    transition: none;
+  }
+
+  .suggestion-btn:hover {
+    transform: none;
+  }
+
+  .suggestion-icon {
+    animation: none;
+  }
+
+  .status-dots span {
+    animation: none;
+    opacity: 1;
+  }
+
+  .suggestion-cursor {
+    animation: none;
+    opacity: 1;
+  }
+
+  .suggestion-placeholder {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .suggestion-text {
+    animation: none;
+  }
+}

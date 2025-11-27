@@ -1,0 +1,118 @@
+/**
+ * Keyboard Hint Styles
+ *
+ * A subtle, floating tooltip that shows keyboard shortcuts.
+ * Features a gentle fade-in animation and elegant styling.
+ */
+
+.keyboard-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.95) 100%);
+  border: 1px solid rgba(229, 231, 235, 0.6);
+  border-radius: 8px;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    0 4px 16px rgba(0, 0, 0, 0.02);
+  animation: hintFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@keyframes hintFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hint-text {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 12px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.keyboard-hint kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #374151;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.15s ease;
+}
+
+.hint-plus {
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* Hover effect on kbd */
+.keyboard-hint:hover kbd {
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .keyboard-hint {
+    background: linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.95) 100%);
+    border-color: rgba(75, 85, 99, 0.4);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.2),
+      0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .hint-text {
+    color: #6b7280;
+  }
+
+  .keyboard-hint kbd {
+    background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+    border-color: #4b5563;
+    color: #e5e7eb;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.2),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .hint-plus {
+    color: #6b7280;
+  }
+
+  .keyboard-hint:hover kbd {
+    background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+    border-color: #6b7280;
+    color: #f9fafb;
+  }
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .keyboard-hint {
+    animation: none;
+  }
+}

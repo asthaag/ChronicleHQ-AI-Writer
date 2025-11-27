@@ -1,0 +1,480 @@
+/**
+ * Editor Component Styles
+ *
+ * These styles control the appearance of the ProseMirror-based editor,
+ * including the streaming text preview and various interactive states.
+ */
+
+/* ============================================================================
+   EDITOR WRAPPER
+   ============================================================================ */
+
+.editor-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.02),
+    0 4px 16px rgba(0, 0, 0, 0.04),
+    0 12px 40px rgba(99, 102, 241, 0.06);
+  overflow: hidden;
+}
+
+/* Gradient border effect using pseudo-element */
+.editor-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 21px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.2) 0%,
+    rgba(139, 92, 246, 0.15) 50%,
+    rgba(99, 102, 241, 0.1) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.editor-wrapper:hover {
+  border-color: rgba(99, 102, 241, 0.25);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.02),
+    0 8px 24px rgba(0, 0, 0, 0.05),
+    0 16px 48px rgba(99, 102, 241, 0.08);
+  transform: translateY(-1px);
+}
+
+.editor-wrapper:hover::before {
+  opacity: 0.5;
+}
+
+.editor-wrapper:focus-within {
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow:
+    0 0 0 4px rgba(99, 102, 241, 0.1),
+    0 4px 16px rgba(99, 102, 241, 0.12),
+    0 16px 48px rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
+}
+
+.editor-wrapper:focus-within::before {
+  opacity: 1;
+}
+
+/* Disabled state during generation */
+.editor-wrapper.editor-disabled {
+  border-color: rgba(99, 102, 241, 0.2);
+  background: linear-gradient(135deg, #fafafa 0%, #f8f9fc 100%);
+  transform: none;
+}
+
+.editor-wrapper.editor-disabled::before {
+  opacity: 0.3;
+}
+
+/* Streaming state - subtle glow effect */
+.editor-wrapper.editor-streaming {
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow:
+    0 0 0 4px rgba(99, 102, 241, 0.1),
+    0 8px 32px rgba(99, 102, 241, 0.15);
+  animation: streamingPulse 2s ease-in-out infinite;
+}
+
+.editor-wrapper.editor-streaming::before {
+  opacity: 1;
+}
+
+@keyframes streamingPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 4px rgba(99, 102, 241, 0.1),
+      0 8px 32px rgba(99, 102, 241, 0.15);
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px rgba(99, 102, 241, 0.15),
+      0 12px 40px rgba(99, 102, 241, 0.2);
+  }
+}
+
+/* ============================================================================
+   EDITOR CONTAINER
+   ============================================================================ */
+
+.editor-container {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+}
+
+/* ProseMirror editor core styles */
+.editor-container .ProseMirror {
+  min-height: 280px;
+  padding: 24px 32px;
+  outline: none;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 1.8;
+  color: #1f2937;
+  caret-color: #6366f1;
+}
+
+.editor-container .ProseMirror.disabled {
+  cursor: not-allowed;
+  user-select: none;
+  opacity: 0.8;
+}
+
+/* ============================================================================
+   PLACEHOLDER
+   ============================================================================ */
+
+.editor-wrapper.editor-empty .editor-container .ProseMirror p:first-child::before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+  position: absolute;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.editor-container .ProseMirror[data-placeholder]:empty::before,
+.editor-container .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+  float: left;
+  height: 0;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* ============================================================================
+   PARAGRAPH STYLES
+   ============================================================================ */
+
+.editor-container .ProseMirror p {
+  margin: 0 0 1em 0;
+}
+
+.editor-container .ProseMirror p:last-child {
+  margin-bottom: 0;
+}
+
+/* Selection highlight */
+.editor-container .ProseMirror ::selection {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+/* ============================================================================
+   STREAMING TEXT OVERLAY
+   ============================================================================ */
+
+.streaming-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 32px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.9) 20%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+}
+
+.streaming-text {
+  color: #6366f1;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 1.8;
+  font-weight: 500;
+  opacity: 0.9;
+  animation: fadeInText 0.2s ease-out;
+}
+
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+}
+
+/* Blinking cursor for streaming */
+.streaming-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: #6366f1;
+  margin-left: 2px;
+  animation: cursorBlink 0.8s ease-in-out infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes cursorBlink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* ============================================================================
+   LIST STYLES
+   ============================================================================ */
+
+.editor-container .ProseMirror ul,
+.editor-container .ProseMirror ol {
+  margin: 0 0 1em 0;
+  padding-left: 1.5em;
+}
+
+.editor-container .ProseMirror li {
+  margin-bottom: 0.5em;
+}
+
+/* ============================================================================
+   HEADING STYLES
+   ============================================================================ */
+
+.editor-container .ProseMirror h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin: 0 0 0.5em 0;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.editor-container .ProseMirror h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 0 0 0.5em 0;
+  color: #111827;
+  letter-spacing: -0.01em;
+}
+
+.editor-container .ProseMirror h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin: 0 0 0.5em 0;
+  color: #111827;
+}
+
+/* ============================================================================
+   TEXT FORMATTING
+   ============================================================================ */
+
+.editor-container .ProseMirror strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+/**
+ * ITALIC TEXT STYLING
+ * Renders the 'em' mark from ProseMirror schema.
+ * The em mark is toggled via:
+ * - Toolbar "I" button (onClick -> toggleItalic)
+ * - Keyboard shortcut: Ctrl/Cmd + I (Mod-i in keymap)
+ * See useProsemirror.ts for the mark definition and toggle logic.
+ */
+.editor-container .ProseMirror em {
+  font-style: italic;
+}
+
+.editor-container .ProseMirror code {
+  background: #f3f4f6;
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
+  font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
+  font-size: 0.9em;
+  color: #e11d48;
+}
+
+.editor-container .ProseMirror blockquote {
+  border-left: 4px solid #e5e7eb;
+  padding-left: 1.25em;
+  margin: 0 0 1em 0;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* ============================================================================
+   PROSEMIRROR PLUGINS
+   ============================================================================ */
+
+/* Gap cursor */
+.ProseMirror-gapcursor {
+  display: none;
+  pointer-events: none;
+  position: absolute;
+}
+
+.ProseMirror-gapcursor:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -2px;
+  width: 20px;
+  border-top: 2px solid #6366f1;
+  animation: ProseMirror-cursor-blink 1.1s steps(2, start) infinite;
+}
+
+@keyframes ProseMirror-cursor-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+.ProseMirror-focused .ProseMirror-gapcursor {
+  display: block;
+}
+
+/* Drop cursor */
+.ProseMirror-dropcursor {
+  position: absolute;
+  width: 2px;
+  background: #6366f1;
+  z-index: 100;
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .editor-wrapper {
+    background: linear-gradient(145deg, #1f2023 0%, #1a1b1e 100%);
+    border-color: rgba(99, 102, 241, 0.2);
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.1),
+      0 4px 16px rgba(0, 0, 0, 0.2),
+      0 12px 40px rgba(99, 102, 241, 0.08);
+  }
+
+  .editor-wrapper::before {
+    background: linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.3) 0%,
+      rgba(139, 92, 246, 0.2) 50%,
+      rgba(168, 85, 247, 0.15) 100%
+    );
+  }
+
+  .editor-wrapper:hover {
+    border-color: rgba(99, 102, 241, 0.35);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.15),
+      0 8px 24px rgba(0, 0, 0, 0.25),
+      0 16px 48px rgba(99, 102, 241, 0.12);
+  }
+
+  .editor-wrapper:focus-within {
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow:
+      0 0 0 4px rgba(99, 102, 241, 0.15),
+      0 4px 16px rgba(99, 102, 241, 0.2),
+      0 16px 48px rgba(99, 102, 241, 0.15);
+  }
+
+  .editor-wrapper.editor-disabled {
+    background: linear-gradient(145deg, #1a1b1e 0%, #18191c 100%);
+    border-color: rgba(99, 102, 241, 0.15);
+  }
+
+  .editor-wrapper.editor-streaming {
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow:
+      0 0 0 4px rgba(99, 102, 241, 0.15),
+      0 8px 32px rgba(99, 102, 241, 0.2);
+  }
+
+  .editor-container .ProseMirror {
+    color: #e5e7eb;
+  }
+
+  .editor-container .ProseMirror h1,
+  .editor-container .ProseMirror h2,
+  .editor-container .ProseMirror h3 {
+    color: #f9fafb;
+  }
+
+  .editor-container .ProseMirror strong {
+    color: #f9fafb;
+  }
+
+  .editor-container .ProseMirror code {
+    background: #374151;
+    color: #fb7185;
+  }
+
+  .editor-container .ProseMirror blockquote {
+    border-left-color: #4b5563;
+    color: #9ca3af;
+  }
+
+  .streaming-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(31, 32, 35, 0) 0%,
+      rgba(31, 32, 35, 0.9) 20%,
+      rgba(31, 32, 35, 1) 100%
+    );
+  }
+
+  .streaming-text {
+    color: #818cf8;
+  }
+
+  .streaming-cursor {
+    background: #818cf8;
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 640px) {
+  .editor-wrapper {
+    min-height: 280px;
+    border-radius: 16px;
+  }
+
+  .editor-wrapper::before {
+    border-radius: 17px;
+  }
+
+  .editor-container .ProseMirror {
+    min-height: 280px;
+    padding: 20px 24px;
+    font-size: 16px;
+  }
+
+  .streaming-overlay {
+    padding: 20px 24px;
+  }
+
+  .streaming-text {
+    font-size: 16px;
+  }
+}

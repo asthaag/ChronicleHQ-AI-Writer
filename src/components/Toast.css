@@ -1,0 +1,223 @@
+/**
+ * Toast Notification Styles
+ *
+ * A sleek, Chronicle-style notification system with:
+ * - Slide-in/out animations from bottom
+ * - Dark background with soft border (neutral type)
+ * - Elegant typography
+ * - Auto-dismiss support
+ */
+
+/* ============================================================================
+   TOAST CONTAINER
+   ============================================================================ */
+
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+/* ============================================================================
+   TOAST BASE
+   ============================================================================ */
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  pointer-events: auto;
+  animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 380px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.toast-exit {
+  animation: toastSlideOut 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toastSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+
+/* ============================================================================
+   NEUTRAL TOAST (Default - Dark Background)
+   ============================================================================ */
+
+.toast-neutral {
+  background: rgba(17, 24, 39, 0.92);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.toast-neutral .toast-icon {
+  color: #a5b4fc;
+}
+
+.toast-neutral .toast-message {
+  color: #d1d5db;
+}
+
+/* ============================================================================
+   SUCCESS TOAST
+   ============================================================================ */
+
+.toast-success {
+  background: rgba(17, 24, 39, 0.92);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 8px 32px rgba(34, 197, 94, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.toast-success .toast-icon {
+  color: #4ade80;
+}
+
+.toast-success .toast-message {
+  color: #d1d5db;
+}
+
+/* ============================================================================
+   ERROR TOAST
+   ============================================================================ */
+
+.toast-error {
+  background: rgba(17, 24, 39, 0.92);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 8px 32px rgba(239, 68, 68, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.toast-error .toast-icon {
+  color: #f87171;
+}
+
+.toast-error .toast-message {
+  color: #d1d5db;
+}
+
+/* ============================================================================
+   INFO TOAST
+   ============================================================================ */
+
+.toast-info {
+  background: rgba(17, 24, 39, 0.92);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 8px 32px rgba(59, 130, 246, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.toast-info .toast-icon {
+  color: #60a5fa;
+}
+
+.toast-info .toast-message {
+  color: #d1d5db;
+}
+
+/* ============================================================================
+   TOAST CONTENT
+   ============================================================================ */
+
+.toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.toast-message {
+  flex: 1;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================================
+   LIGHT MODE OVERRIDE (if preferred)
+   ============================================================================ */
+
+@media (prefers-color-scheme: light) {
+  /* Keep dark toasts in light mode for contrast */
+  .toast-neutral,
+  .toast-success,
+  .toast-error,
+  .toast-info {
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.12),
+      0 8px 32px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 640px) {
+  .toast-container {
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    transform: none;
+  }
+
+  .toast {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
+
+  .toast-exit {
+    animation: none;
+    opacity: 0;
+  }
+}
